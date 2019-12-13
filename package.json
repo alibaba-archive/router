@@ -1,0 +1,50 @@
+{
+  "name": "@ice/router",
+  "version": "0.1.1",
+  "descripts": "router for ice-app",
+  "files": [
+    "es/",
+    "lib/"
+  ],
+  "main": "lib/index.js",
+  "module": "es/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "build-es": "rm -rf es && tsc --module es2015 --outDir es -p tsconfig.build.json",
+    "build-lib": "rm -rf lib && tsc --module commonjs --outDir lib -p tsconfig.build.json",
+    "build": "npm run build-es && npm run build-lib",
+    "test": "NODE_ENV=unittest jest",
+    "lint": "eslint --cache --ext .ts,.tsx,.js,.jsx ./",
+    "prepublishOnly": "npm run build",
+    "coverage": "codecov"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "jest": {
+    "coverageDirectory": "./coverage/",
+    "collectCoverage": true,
+    "preset": "ts-jest"
+  },
+  "dependencies": {
+    "@types/lodash.clonedeep": "^4.5.6",
+    "@types/node": "^12.12.12",
+    "@types/react-router-dom": "^5.1.2",
+    "lodash.clonedeep": "^4.5.0",
+    "react-router-dom": "^5.1.2"
+  },
+  "devDependencies": {
+    "@ice/spec": "^0.1.9",
+    "@types/jest": "^24.0.23",
+    "@types/react-test-renderer": "^16.9.1",
+    "codecov": "^3.6.1",
+    "eslint": "^6.7.2",
+    "jest": "^24.9.0",
+    "prettier": "^1.19.1",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "react-test-renderer": "^16.9.1",
+    "ts-jest": "^24.2.0",
+    "typescript": "^3.7.3"
+  }
+}
