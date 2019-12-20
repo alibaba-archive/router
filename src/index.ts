@@ -21,4 +21,4 @@ export {
   withRouter,
 } from 'react-router-dom';
 
-export { Router, ICERouteProps, ICERouterProps } from './Router';
+export { Router, IRoutes } from './Router';
