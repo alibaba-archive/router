@@ -23,7 +23,7 @@ export interface ICERouteProps extends RouteProps {
   redirect?: string;
 };
 
-interface ICERouterProps {
+export interface ICERouterProps {
   // custom props
   routes: ICERouteProps[];
   type?: 'hash' | 'browser' | 'memory';
@@ -102,7 +102,9 @@ function Routes({ routes }: RoutesProps) {
 function formatRoutes(routes: ICERouteProps[], parentPath: string): ICERouteProps[] {
   return routes.map((item) => {
     if (item.path) {
-      item.path = path.join(parentPath || '', item.path).replace(/\/$/, ''); // react-router: path=/project/ not match /project
+      const joinPath = path.join(parentPath || '', item.path);
+      // react-router: path=/project/ not match /project
+      item.path = joinPath === '/' ? '/' : joinPath.replace(/\/$/, '');
     }
 
     if (item.children) {
