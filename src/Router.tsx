@@ -15,8 +15,8 @@ import {
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const cloneDeep = require('lodash.clonedeep');
 
-interface RouteProps extends DefaultRouteProps {
-  children?: RouteProps[];
+export interface RouteItemProps extends DefaultRouteProps {
+  children?: RouteItemProps[];
   // disable string[]
   path?: string;
   // for rediect ability
@@ -25,7 +25,7 @@ interface RouteProps extends DefaultRouteProps {
 
 interface RouterProps {
   // custom props
-  routes: RouteProps[];
+  routes: RouteItemProps[];
   type?: 'hash' | 'browser' | 'memory';
   // common props for BrowserRouter&HashRouter&MemoryRouter
   basename?: string;
@@ -41,11 +41,7 @@ interface RouterProps {
 };
 
 interface RoutesProps {
-  routes: RouteProps[];
-};
-
-export interface IRoutes {
-  [index: number]: RouteProps[];
+  routes: RouteItemProps[];
 };
 
 export function Router(props: RouterProps) {
@@ -103,7 +99,7 @@ function Routes({ routes }: RoutesProps) {
 /**
  * join path
  */
-function formatRoutes(routes: RouteProps[], parentPath: string): RouteProps[] {
+function formatRoutes(routes: RouteItemProps[], parentPath: string): RouteItemProps[] {
   return routes.map((item) => {
     if (item.path) {
       const joinPath = path.join(parentPath || '', item.path);
