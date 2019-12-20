@@ -8,24 +8,24 @@ import {
   Route,
   Redirect,
 
-  RouteProps as IDefaultRouteProps,
+  RouteProps as DefaultRouteProps,
   RouteComponentProps,
 } from 'react-router-dom';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const cloneDeep = require('lodash.clonedeep');
 
-interface IRouteProps extends IDefaultRouteProps {
-  children?: IRouteProps[];
+interface RouteProps extends DefaultRouteProps {
+  children?: RouteProps[];
   // disable string[]
   path?: string;
   // for rediect ability
   redirect?: string;
 };
 
-interface IRouterProps {
+interface RouterProps {
   // custom props
-  routes: IRouteProps[];
+  routes: RouteProps[];
   type?: 'hash' | 'browser' | 'memory';
   // common props for BrowserRouter&HashRouter&MemoryRouter
   basename?: string;
@@ -40,15 +40,15 @@ interface IRouterProps {
   initialIndex?: number;
 };
 
-interface IRoutesProps {
-  routes: IRouteProps[];
+interface RoutesProps {
+  routes: RouteProps[];
 };
 
 export interface IRoutes {
-  [index: number]: IRouteProps[];
+  [index: number]: RouteProps[];
 };
 
-export function Router(props: IRouterProps) {
+export function Router(props: RouterProps) {
   const { type = 'hash', routes, ...others } = props;
   const typeToComponent = {
     hash: HashRouter,
@@ -66,7 +66,7 @@ export function Router(props: IRouterProps) {
   );
 }
 
-function Routes({ routes }: IRoutesProps) {
+function Routes({ routes }: RoutesProps) {
   return (
     <Switch>
       {routes.map((route, id) => {
@@ -103,7 +103,7 @@ function Routes({ routes }: IRoutesProps) {
 /**
  * join path
  */
-function formatRoutes(routes: IRouteProps[], parentPath: string): IRouteProps[] {
+function formatRoutes(routes: RouteProps[], parentPath: string): RouteProps[] {
   return routes.map((item) => {
     if (item.path) {
       const joinPath = path.join(parentPath || '', item.path);
