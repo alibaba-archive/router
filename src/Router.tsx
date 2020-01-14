@@ -21,6 +21,8 @@ export interface RouteItemProps extends DefaultRouteProps {
   path?: string;
   // for rediect ability
   redirect?: string;
+
+  RouteWrapper?: React.ComponentType;
 };
 
 interface RouterProps {
@@ -73,21 +75,41 @@ function Routes({ routes }: RoutesProps) {
             const { redirect, path, ...others } = route;
             return <Redirect key={id} from={route.path} to={redirect} {...others} />;
           } else {
-            return <Route key={id} {...route} />;
+            const { RouteWrapper, component, ...others } = route;
+            if (RouteWrapper) {
+              const RouteComponent = component;
+              return (
+                <Route
+                  key={id}
+                  {...others}
+                  render={(props: RouteComponentProps) => {
+                    return (
+                      <RouteWrapper {...others} {...props}>
+                        <RouteComponent {...props} />
+                      </RouteWrapper>
+                    );
+                  }}
+                />
+              );
+            } else {
+              return <Route key={id} component={component} {...others} />;
+            }
           }
         } else {
-          const { component: LayoutComponent, children, ...others } = route;
+          const { component: LayoutComponent, children, RouteWrapper, ...others } = route;
+          const RenderComponent = (props: RouteComponentProps) => (
+            <LayoutComponent {...props}>
+              <Routes routes={children} />
+            </LayoutComponent>
+          );
+          const ComponentWithWrapper = RouteWrapper ? (props: RouteComponentProps) => (
+            <RouteWrapper {...others} {...props}><RenderComponent {...props} /></RouteWrapper>
+          ) : RenderComponent;
           return (
             <Route
               key={id}
               {...others}
-              component={(props: RouteComponentProps) => {
-                return (
-                  <LayoutComponent {...props}>
-                    <Routes routes={children} />
-                  </LayoutComponent>
-                );
-              }}
+              component={ComponentWithWrapper}
             />
           );
         }
